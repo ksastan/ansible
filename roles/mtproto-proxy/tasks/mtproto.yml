@@ -1,0 +1,62 @@
+- name: Install dependencies
+  yum:
+    name:
+      - git
+      - vim-common
+      - libtool
+      - perl-core
+      - zlib-devel
+      - http://repo.okay.com.mx/centos/7/x86_64/release//crypto-policies-20170816-1.git2618a6c.el7.noarch.rpm
+      - http://repo.okay.com.mx/centos/7/x86_64/release//openssl11-libs-1.1.0i-1.el7.x86_64.rpm
+
+- name: Create mtproto folder
+  file:
+    path: /opt/mtproto
+    state: directory
+
+- name: Download and extract mtproto-proxy
+  unarchive:
+    src: https://github.com/egeneralov/mtproto/raw/master/mtproto-proxy.tar.gz
+    remote_src: yes
+    dest: /opt/mtproto
+
+- name: Get example configs
+  get_url:
+    url: https://core.telegram.org/getProxySecret
+    dest: /opt/mtproto/proxy-secret
+- get_url:
+    url: https://core.telegram.org/getProxyConfig
+    dest: /opt/mtproto/proxy-multi.conf
+
+- name: Create password file
+  shell: head -c 16 /dev/urandom | xxd -ps | tee /opt/mtproto/user.passwd
+  args:
+    creates: /opt/mtproto/user.passwd
+
+- name: Create password file
+  shell: cat /opt/mtproto/user.passwd
+  register: passwd
+  changed_when: false
+
+- template:
+    src: mtproto.service.j2
+    dest: /etc/systemd/system/mtproto.service
+
+- name: Enable and start proxy service
+  systemd:
+    daemon_reload: yes
+    name: "mtproto.service"
+    state: started
+    enabled: yes
+
+- name: Add firewall rule
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ proxy_port }}"
+    ctstate: NEW,ESTABLISHED
+    jump: ACCEPT
+    comment: Allow mtproto
+
+- debug:
+    msg: "tg://proxy?server={{ ansible_default_ipv4.address }}&port={{ proxy_port }}&secret={{ passwd.stdout }}"

@@ -1,0 +1,17 @@
+- name: Install yum-utils
+  yum:
+    name: yum-utils
+    state: latest
+
+- name: Install epel repo
+  yum:
+    name: epel-release
+
+- name: Disable SELinux for now
+  changed_when: false
+  ignore_errors: true
+  command: setenforce 0
+
+- name: Disable SELinux on reboot
+  selinux:
+    state: disabled

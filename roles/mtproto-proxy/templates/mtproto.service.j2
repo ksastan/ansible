@@ -1,0 +1,10 @@
+[Unit]
+Description=MtProto proxy
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/opt/mtproto/bin/mtproto-proxy -p 8888 -H {{ proxy_port }} -S {{ passwd.stdout }} --aes-pwd /opt/mtproto/proxy-secret /opt/mtproto/proxy-multi.conf -u root
+
+[Install]
+WantedBy=multi-user.target

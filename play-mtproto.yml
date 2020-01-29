@@ -1,0 +1,8 @@
+- name : Configure MTproto proxy
+  hosts: all
+  become: yes
+  vars:
+    proxy_port: 443
+
+  roles:
+    - mtproto-proxy

@@ -1,3 +1,26 @@
+- name: Add Docker repo
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  changed_when: false
+
+- name: Install Docker-ce
+  yum:
+    name: docker-ce
+    state: latest
+
+- name: Enable service Docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Install Pip
+  yum:
+    name: python-pip
+
+- name: Install docker-py
+  pip:
+    name: docker-py
+
 - name: Get public ip
   uri:
     url: http://ifconfig.me/ip
@@ -7,7 +30,6 @@
 - name: Start OpenVPN container
   docker_container:
     name: openvpn
-    recreate: yes
     image: "{{ openvpn_image }}"
     published_ports:
       - "{{ http_port }}:8080"
