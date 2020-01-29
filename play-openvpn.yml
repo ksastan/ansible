@@ -1,6 +1,10 @@
 - name : Configure OpenVPN server
   hosts: all
   become: yes
+  vars:
+    openvpn_image: "alekslitvinenk/openvpn"
+    openvpn_udp_port: "1194"
+    http_port: "80"
 
   roles:
     - openvpn-server

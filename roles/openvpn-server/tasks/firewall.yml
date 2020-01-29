@@ -1,0 +1,36 @@
+- name: Allow related and established connections
+  iptables:
+      chain: INPUT
+      ctstate: ESTABLISHED,RELATED
+      jump: ACCEPT
+
+- name: Allow new incoming SYN packets on TCP port 22 (SSH).
+  iptables:
+      chain: INPUT
+      action: insert
+      protocol: tcp
+      destination_port: 22
+      ctstate: NEW
+      syn: match
+      jump: ACCEPT
+
+- name: Allow new incoming SYN packets on TCP port 80 (HTTP).
+  iptables:
+      chain: INPUT
+      protocol: tcp
+      destination_port: 80
+      ctstate: NEW
+      syn: match
+      jump: ACCEPT
+
+- name: Allow incoming on UDP port 1194 (OpenVPN).
+  iptables:
+      chain: INPUT
+      protocol: udp
+      destination_port: 1194
+      jump: ACCEPT
+
+- name: Default INPUT block rule
+  iptables:
+      chain: INPUT
+      policy: DROP

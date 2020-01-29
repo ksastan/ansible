@@ -32,6 +32,7 @@
 
 - name: Disable SELinux for now
   changed_when: false
+  ignore_errors: true
   command: setenforce 0
 
 - name: Disable SELinux on reboot

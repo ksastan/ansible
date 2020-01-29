@@ -1,0 +1,21 @@
+- name: Get public ip
+  uri:
+    url: http://ifconfig.me/ip
+    return_content: yes
+  register: ip_public
+
+- name: Start OpenVPN container
+  docker_container:
+    name: openvpn
+    recreate: yes
+    image: "{{ openvpn_image }}"
+    published_ports:
+      - "{{ http_port }}:8080"
+      - "{{ openvpn_udp_port }}:1194/udp"
+    env:
+      HOST_ADDR: "{{ ip_public.content }}"
+    capabilities:
+      - NET_ADMIN
+
+- debug:
+    msg: "OpenVPN configuration http://{{ ip_public.content }}"
