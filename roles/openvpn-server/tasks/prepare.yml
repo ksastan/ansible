@@ -1,0 +1,39 @@
+- name: Install yum-utils
+  yum:
+    name: yum-utils
+    state: latest
+
+- name: Add Docker repo
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  changed_when: false
+
+- name: Install Docker-ce
+  yum:
+    name: docker-ce
+    state: latest
+
+- name: Enable service Docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Install epel repo
+  yum:
+    name: epel-release
+
+- name: Install Pip
+  yum:
+    name: python-pip
+
+- name: Install docker-py
+  pip:
+    name: docker-py
+
+- name: Disable SELinux for now
+  changed_when: false
+  command: setenforce 0
+
+- name: Disable SELinux on reboot
+  selinux:
+    state: disabled
