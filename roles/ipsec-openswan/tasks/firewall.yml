@@ -1,0 +1,7 @@
+- name: Allow new incoming SYN packets on TCP port 3333
+  iptables:
+      chain: INPUT
+      action: insert
+      protocol: udp
+      destination_port: 3333
+      jump: ACCEPT

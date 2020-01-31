@@ -1,0 +1,18 @@
+- name: Install OpenSwan
+  yum:
+    name: openswan
+    state: latest
+
+  uri:
+    url: http://ifconfig.me/ip
+    return_content: yes
+  register: ip_public
+
+- name: Enable service Docker
+  service:
+    name: openswan
+    state: started
+    enabled: yes
+
+- debug:
+    msg: "Public IP {{ ip_public.content }}"

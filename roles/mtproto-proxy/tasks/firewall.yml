@@ -1,0 +1,9 @@
+- name: Allow new incoming SYN packets on TCP port 443
+  iptables:
+      action: insert
+      chain: INPUT
+      protocol: tcp
+      destination_port: 443
+      ctstate: NEW
+      syn: match
+      jump: ACCEPT

@@ -1,1 +1,2 @@
+- import_tasks: firewall.yml
 - import_tasks: prepare.yml

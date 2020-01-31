@@ -18,10 +18,6 @@
     state: started
     enabled: yes
 
-- name: Install epel repo
-  yum:
-    name: epel-release
-
 - name: Install Pip
   yum:
     name: python-pip

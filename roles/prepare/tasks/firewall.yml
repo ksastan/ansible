@@ -1,0 +1,21 @@
+- name: Allow related and established connections
+  iptables:
+    action: insert
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+
+- name: Allow new incoming SYN packets on TCP port 22 (SSH).
+  iptables:
+    chain: INPUT
+    action: insert
+    protocol: tcp
+    destination_port: 22
+    ctstate: NEW
+    syn: match
+    jump: ACCEPT
+
+- name: Default INPUT block rule
+  iptables:
+    chain: INPUT
+    policy: DROP
