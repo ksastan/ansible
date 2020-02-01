@@ -1,18 +1,30 @@
-- name: Install OpenSwan
+- name: Install StrongSwan
   yum:
-    name: openswan
+    name: strongswan
     state: latest
 
+- name: Generate preShared key
+  shell: openssl rand -base64 64
+  register: preshared_key
+
+- name: Get public IP
   uri:
     url: http://ifconfig.me/ip
     return_content: yes
-  register: ip_public
+  register: ip_local
 
-- name: Enable service Docker
-  service:
-    name: openswan
-    state: started
-    enabled: yes
+- name: Create secret file
+  template:
+    src: ipsec.secrets.j2
+    dest: /etc/ipsec.secrets
+#
+#- name: Enable service StrongSwan
+#  service:
+#    name: strongswan
+#    state: started
+#    enabled: yes
 
 - debug:
-    msg: "Public IP {{ ip_public.content }}"
+    msg: "Public IP: {{ ip_local.content }}"
+- debug:
+    msg: "Preshared key: {{ preshared_key.stdout }}"

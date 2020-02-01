@@ -1,0 +1,6 @@
+- name : Configure OpenSwan ipsec
+  hosts: all
+  become: yes
+
+  roles:
+    - ipsec-openswan
