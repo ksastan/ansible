@@ -16,13 +16,18 @@
 - name: Create secret file
   template:
     src: ipsec.secrets.j2
-    dest: /etc/ipsec.secrets
-#
-#- name: Enable service StrongSwan
-#  service:
-#    name: strongswan
-#    state: started
-#    enabled: yes
+    dest: /etc/strongswan/ipsec.secrets
+
+- name: Create config file
+  template:
+    src: ipsec.conf.j2
+    dest: /etc/strongswan/ipsec.conf
+
+- name: Enable service StrongSwan
+  service:
+    name: strongswan
+    state: started
+    enabled: yes
 
 - debug:
     msg: "Public IP: {{ ip_local.content }}"

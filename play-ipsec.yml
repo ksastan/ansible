@@ -1,0 +1,10 @@
+- name : Configure OpenSwan ipsec
+  hosts: all
+  become: yes
+  vars:
+    subnet_remote: "10.150.150.0/24"
+    subnet_local: "10.160.150.0/24"
+    ip_remote: "40.40.40.40"
+
+  roles:
+    - ipsec-openswan

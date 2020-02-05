@@ -1,7 +1,15 @@
-- name: Allow new incoming SYN packets on TCP port 3333
+- name: Allow incoming on UDP port 4500
   iptables:
       chain: INPUT
       action: insert
       protocol: udp
-      destination_port: 3333
+      destination_port: 4500
+      jump: ACCEPT
+
+- name: Allow incoming on UDP port 500
+  iptables:
+      chain: INPUT
+      action: insert
+      protocol: udp
+      destination_port: 500
       jump: ACCEPT
