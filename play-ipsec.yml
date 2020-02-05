@@ -1,4 +1,4 @@
-- name : Configure OpenSwan ipsec
+- name : Configure StrongSwan ipsec
   hosts: all
   become: yes
   vars:
@@ -7,4 +7,4 @@
     ip_remote: "40.40.40.40"
 
   roles:
-    - ipsec-openswan
+    - ipsec-strongswan
