@@ -1,2 +1,6 @@
-subnet_remote: "10.10.1.0/24"
-subnet_local: "10.1.1.0/24"
+subnet_remote: ""
+subnet_local: ""
+nmcli_ethernet:
+  - conn_name: ethernet
+    ip4: '{{ ip_local }}'
+    gw4: ''

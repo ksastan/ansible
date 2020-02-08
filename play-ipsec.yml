@@ -3,7 +3,8 @@
   become: yes
   vars:
     subnet_remote: "10.150.150.0/24"
-    subnet_local: "10.160.150.0/24"
+    subnet_local: "10.90.0.0/24"
+    ip_local: "10.90.0.1/24"
     ip_remote: "40.40.40.40"
 
   roles:
